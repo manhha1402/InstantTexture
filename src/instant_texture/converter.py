@@ -41,18 +41,18 @@ class Converter:
 
     def convert(self, input_mesh_path: str, output_mesh_path: str | None = None) -> str:
         """
-        Converts the input mesh vertex-colored .obj file to a uv-mapped, textured .glb file.
+        Converts the input mesh vertex-colored file to a uv-mapped, textured .obj file.
 
         Parameters:
             input_mesh_path (str): The path to the input mesh file.
-            output_mesh_path (str | None): The path to the output mesh file. If None, the default path is "output.glb".
+            output_mesh_path (str | None): The path to the output mesh file. If None, the default path is "output.obj".
 
         Returns:
             str: The path to the output mesh file.
         """
 
         output_mesh_path = self._validate_output_path(output_mesh_path)
-
+        
         if input_mesh_path.startswith("http"):
             mesh = trimesh.load_remote(input_mesh_path)
         else:
@@ -116,25 +116,25 @@ class Converter:
 
     def _validate_output_path(self, output_path: str | None) -> Path:
         """
-        Validate and coerce the output path to a .glb file.
+        Validate and coerce the output path to a .obj file.
 
         Parameters:
             output_path (str | None): The desired output path.
 
         Returns:
-            Path: A Path object with a .glb extension.
+            Path: A Path object with a .obj extension.
         """
-        default_output = Path("output.glb")
+        default_output = Path("output.obj")
 
         if output_path is None:
             return default_output
 
         path = Path(output_path)
 
-        if path.suffix.lower() != ".glb":
-            new_path = path.with_suffix(".glb")
+        if path.suffix.lower() != ".obj":
+            new_path = path.with_suffix(".obj")
             warnings.warn(
-                f"Output file extension changed from '{path.suffix}' to '.glb'",
+                f"Output file extension changed from '{path.suffix}' to '.obj'",
                 f"Saving as {new_path}",
             )
             return new_path
